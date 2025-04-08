@@ -75,3 +75,11 @@ export const verifyEmail = async (req, res) => {
     res.status(500).json({ success: false, message: error.message })
   }
 }
+
+export const logout = async (req, res) => {
+  res.cookie('jwt', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  })
+  res.status(200).json({ message: 'User logged out' })
+}
