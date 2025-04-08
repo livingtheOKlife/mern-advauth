@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import User from '../models/user.model.js'
 
 import generateToken from '../utils/generateToken.util.js'
+import sendVerificationEmail from '../utils/sendVerificationEmail.util.js'
 
 export const register = async (req, res) => {
   const { email, password, name } = req.body
@@ -29,6 +30,7 @@ export const register = async (req, res) => {
     })
     await user.save()
     generateToken(res, user._id)
+    sendVerificationEmail(user.email, verificationToken)
     res.status(201).json({
       success: true,
       message: 'User created successfully',
