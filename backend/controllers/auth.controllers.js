@@ -1,10 +1,14 @@
 import bcrypt from 'bcryptjs'
+import crypto from 'crypto'
 
 import User from '../models/user.model.js'
 
 import generateToken from '../utils/generateToken.util.js'
 import sendVerificationEmail from '../utils/sendVerificationEmail.util.js'
 import sendWelcomeEmail from '../utils/sendWelcomeEmail.util.js'
+import sendResetPasswordEmail from '../utils/sendResetPasswordEmail.js'
+
+const SERVER_URL = process.env.SERVER_URL
 
 export const register = async (req, res) => {
   const { email, password, name } = req.body
@@ -109,6 +113,33 @@ export const login = async (req, res) => {
         ...user._doc,
         password: undefined,
       },
+    })
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message })
+  }
+}
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body
+  try {
+    const user = await User.findOne({ email })
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'Invalid not found' })
+    }
+    const resetToken = crypto.randomBytes(20).toString('hex')
+    const resetTokenExpiresAt = Date.now() + 1 * 60 * 60 * 1000
+    user.resetPasswordToken = resetToken
+    user.resetPasswordExpiresAt = resetTokenExpiresAt
+    await user.save()
+    sendResetPasswordEmail(
+      user.email,
+      `${SERVER_URL}/reset-password/${resetToken}`
+    )
+    res.status(200).json({
+      success: true,
+      message: 'Password reset link sent to your email',
     })
   } catch (error) {
     res.status(400).json({ success: false, message: error.message })
