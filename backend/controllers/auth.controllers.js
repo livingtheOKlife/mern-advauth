@@ -83,3 +83,34 @@ export const logout = async (req, res) => {
   })
   res.status(200).json({ message: 'User logged out' })
 }
+
+export const login = async (req, res) => {
+  const { email, password } = req.body
+  try {
+    const user = await User.findOne({ email })
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'Invalid credentials' })
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password)
+    if (!isPasswordValid) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'Invalid credentials' })
+    }
+    generateToken(res, user._id)
+    user.lastLogin = new Date()
+    await user.save()
+    res.status(201).json({
+      success: true,
+      message: 'User logged in successfully',
+      user: {
+        ...user._doc,
+        password: undefined,
+      },
+    })
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message })
+  }
+}
