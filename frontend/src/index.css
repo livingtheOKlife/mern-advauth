@@ -71,7 +71,7 @@ input::-ms-clear {
   margin: 0 auto;
 }
 
-.flex, .tags .tag, .tags, .input-btn, .btn, .menu-btn, #alert-zeta .alert-btn, #alert-zeta, .spinner .spinner-background, .form-control, .form-header, .form-widget, #footer-container #footer-wrapper #brand, #footer-container #footer-wrapper, #menu-container #menu-nav button, #menu-container #menu-nav .menu-nav-list .menu-nav-item, #menu-container #menu-nav .menu-nav-list, #menu-container #menu-nav, #header-container #main-nav, .page-not-found-page .main-wrapper, .page-not-found-page, .about-page .main-wrapper, .about-page, .profile-page, .sign-up-page, .sign-in-page, .home-page .buttons, .home-page, .App {
+.flex, #main-container, .tags .tag, .tags, .input-btn, .btn, .menu-btn, #alert-zeta .alert-btn, #alert-zeta, .spinner .spinner-background, .form-control, .form-header, .form-widget, #footer-container #footer-wrapper #brand, #footer-container #footer-wrapper, #menu-container #menu-nav button, #menu-container #menu-nav .menu-nav-list .menu-nav-item, #menu-container #menu-nav .menu-nav-list, #menu-container #menu-nav, #header-container #main-nav, .page-not-found-page .main-wrapper, .page-not-found-page, .about-page .main-wrapper, .about-page, .profile-page, .sign-up-page, .sign-in-page, .home-page .buttons, .home-page, .App {
   display: flex;
 }
 
@@ -405,7 +405,7 @@ input::-ms-clear {
        column-gap: 256px;
 }
 
-.h-100, .input-btn, #alert-zeta .alert-progress-bg .alert-progress-bar, #main-container, #menu-container #menu-nav {
+.h-100, #main-container .main-wrapper, .input-btn, #alert-zeta .alert-progress-bg .alert-progress-bar, #main-container, #menu-container #menu-nav {
   height: 100%;
 }
 
@@ -909,7 +909,7 @@ input::-ms-clear {
   padding-bottom: 24px;
 }
 
-.px-24, .btn.lg, .form-widget {
+.px-24, #main-container, .btn.lg, .form-widget {
   padding-left: 24px;
   padding-right: 24px;
 }

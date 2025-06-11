@@ -1,17 +1,22 @@
 import PropTypes from 'prop-types'
 
-function MainContainer ({page, children}) {
+function MainContainer ({page, wrapper, children}) {
   return (
     <main id="main-container" className={page}>
-      <div className="main-wrapper">
-        {children}
-      </div>
+      {
+        wrapper ?
+          <div className="main-wrapper">
+            {children}
+          </div>
+        : <>{children}</>
+      }
     </main>
   )
 }
 
 MainContainer.propTypes = {
   page: PropTypes.string.isRequired,
+  wrapper: PropTypes.bool,
   children: PropTypes.node.isRequired
 }
 

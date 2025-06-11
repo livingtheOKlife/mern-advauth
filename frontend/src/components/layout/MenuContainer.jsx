@@ -1,20 +1,37 @@
 import { useContext } from 'react'
+import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
+
+import { useLogoutMutation } from '../../slices/authApiSlice'
+import { clearCredentials } from '../../slices/authSlice'
 
 import { FaArrowRightFromBracket, FaArrowRightToBracket, FaBookOpenReader, FaEnvelope, FaSignature, FaUser, FaX } from 'react-icons/fa6'
 
-import MenuContext from '../../context/menu/MenuContext' 
+import MenuContext from '../../context/menu/MenuContext'
+import AlertContext from '../../context/alert/AlertContext'
 
 const MenuContainer = () => {
   const { menu, setMenuInactive } = useContext(MenuContext)
+  const { setAlertActive } = useContext(AlertContext)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
+  const [logout] = useLogoutMutation()
   const pathMatchRoute = (route) => {
     if (route === location.pathname) {
       return true
     }
   }
-  const logoutHandler = () => {}
+  const logoutHandler = async () => {
+    try {
+      await logout()
+      dispatch(clearCredentials())
+      setMenuInactive()
+      navigate('/')
+    } catch (error) {
+      setAlertActive(`Log out failed - ${error.message}`, 'error')
+    }
+  }
   return menu !== null &&
     <aside id='menu-container'>
       <nav id="menu-nav">
@@ -87,10 +104,7 @@ const MenuContainer = () => {
                 <FaBookOpenReader />
               </li>
           }
-          <li className="menu-nav-item" onClick={() => {
-            logoutHandler()
-            setMenuInactive()
-          }}>
+          <li className="menu-nav-item" onClick={logoutHandler}>
             Logout
             <FaArrowRightFromBracket />
           </li>
